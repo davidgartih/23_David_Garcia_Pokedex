@@ -208,7 +208,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔍 Pokédex</h1>
+        <h1>Pokédex</h1>
         
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Buscar Pokémon por nombre...">
@@ -232,14 +232,14 @@
     </div>
 
     <script>
-        // Variables globales
+        
         let allPokemon = [];
         let filteredPokemon = [];
         let currentPage = 1;
         const pokemonPerPage = 20;
         let isLoading = false;
 
-        // Elementos del DOM
+        
         const pokemonGrid = document.getElementById('pokemonGrid');
         const searchInput = document.getElementById('searchInput');
         const prevBtn = document.getElementById('prevBtn');
@@ -248,7 +248,7 @@
         const loading = document.getElementById('loading');
         const noResults = document.getElementById('noResults');
 
-        // Función para obtener la lista de Pokémon
+        
         async function getPokemonList() {
             try {
                 showLoading(true);
@@ -261,7 +261,7 @@
             }
         }
 
-        // Función para obtener detalles de un Pokémon
+        
         async function getPokemonDetails(url) {
             try {
                 const response = await fetch(url);
@@ -278,12 +278,12 @@
             }
         }
 
-        // Función para cargar todos los Pokémon
+        
         async function loadAllPokemon() {
             const pokemonList = await getPokemonList();
             const promises = pokemonList.map(pokemon => getPokemonDetails(pokemon.url));
             
-            // Procesar en lotes para evitar sobrecargar la API
+            
             const batchSize = 50;
             const results = [];
             
@@ -292,11 +292,11 @@
                 const batchResults = await Promise.all(batch);
                 results.push(...batchResults.filter(pokemon => pokemon !== null));
                 
-                // Mostrar progreso
+                
                 const progress = Math.min(i + batchSize, promises.length);
                 loading.textContent = `Cargando Pokémon... ${progress}/${promises.length}`;
                 
-                // Pequeña pausa para no sobrecargar
+                
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
             
@@ -307,13 +307,13 @@
             updatePagination();
         }
 
-        // Función para mostrar/ocultar loading
+        
         function showLoading(show) {
             loading.style.display = show ? 'block' : 'none';
             pokemonGrid.style.display = show ? 'none' : 'grid';
         }
 
-        // Función para mostrar Pokémon en la página actual
+        
         function displayPokemon() {
             const startIndex = (currentPage - 1) * pokemonPerPage;
             const endIndex = startIndex + pokemonPerPage;
@@ -341,7 +341,7 @@
                     <div class="pokemon-id">#${pokemon.id.toString().padStart(3, '0')}</div>
                 `;
 
-                // Agregar evento click para abrir imagen en nueva pestaña
+                
                 const pokemonImage = pokemonCard.querySelector('img');
                 pokemonImage.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -354,7 +354,7 @@
             });
         }
 
-        // Función para actualizar la paginación
+        
         function updatePagination() {
             const totalPages = Math.ceil(filteredPokemon.length / pokemonPerPage);
             
@@ -366,7 +366,7 @@
                 'Página 0 de 0';
         }
 
-        // Función para filtrar Pokémon
+        
         function filterPokemon(searchTerm) {
             const term = searchTerm.toLowerCase().trim();
             
@@ -383,7 +383,7 @@
             updatePagination();
         }
 
-        // Event Listeners
+        
         searchInput.addEventListener('input', (e) => {
             filterPokemon(e.target.value);
         });
@@ -407,7 +407,7 @@
             }
         });
 
-        // Inicializar la aplicación
+        
         document.addEventListener('DOMContentLoaded', () => {
             loadAllPokemon();
         });
